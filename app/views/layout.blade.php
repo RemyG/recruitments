@@ -13,9 +13,14 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1><a href="/">Recruitments</a></h1>
-
-			<a href="/logout">Logout</a>
+			<div class="row">
+				<div class="col-md-10">
+					<h1><a href="/">Recruitments</a></h1>
+				</div>
+				<div class="col-md-2">
+					<div class="logout pull-right"><a href="/logout">Logout</a></div>
+				</div>
+			</div>
 
 			@yield('content')
 		</div>

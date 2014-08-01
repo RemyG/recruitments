@@ -5,12 +5,12 @@
 
 	<div>
 		Address:
-		<address>{{ $company->address }}</address>
+		<address>{{ nl2br(e($company->address)) }}</address>
 	</div>
 
 	<div>
 		Description:
-		<p>{{ $company->description }}</p>
+		<p>{{ nl2br(e($company->description)) }}</p>
 	</div>
 
 	<div>

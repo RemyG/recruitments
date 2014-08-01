@@ -11,31 +11,11 @@
 |
 */
 
-Route::get('login', function() {
-	return View::make('users.login');
-});
+Route::get('/login', 'UserController@getLogin');
 
-Route::post('login', function() {
-		$userdata = array(
-			'username' => Input::get('username'),
-			'password' => Input::get('password')
-		);
+Route::post('/login', 'UserController@postLogin');
 
-		$rememberme = Input::get('rememberme');
-
-		/* Try to authenticate the credentials */
-		if(Auth::attempt($userdata, ($rememberme == 'on' ? true : false))) {
-			return Redirect::to('/');
-		}
-		else {
-			return Redirect::to('login');
-		}
-});
-
-Route::get('logout', function() {
-	Auth::logout();
-	return Redirect::to('login');
-});
+Route::get('/logout', 'UserController@getLogout');
 
 Route::group(array('before' => 'auth'), function() {
 	Route::get('/', 'CompanyController@index');

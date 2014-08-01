@@ -37,7 +37,7 @@ $(function() {
 				<tr>
 					<td>{{ $contact->date }}</td>
 					<td>{{ $contact->type }}</td>
-					<td>{{ $contact->description }}</td>
+					<td>{{ nl2br(e($contact->description)) }}</td>
 					<td><a href="{{ URL::to('contacts/' . $contact->id . '/edit') }}">Edit</a></td>
 				</tr>
 			@endforeach

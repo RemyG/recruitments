@@ -27,7 +27,7 @@
 			<th></th>
 		</thead>
 		<tbody>
-			@foreach($company->employees as $employee)
+			@foreach($company->employees->sortBy('name') as $employee)
 			<tr>
 				<td>{{ $employee->name }}</td>
 				<td>{{ $employee->phone }}</td>

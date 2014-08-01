@@ -9,7 +9,7 @@ class CompanyController extends \BaseController {
 	 */
 	public function index()
 	{
-		$companies = Company::all();
+		$companies = Company::orderBy('name')->get();
 		return View::make('companies.index', array('companies' => $companies));
 	}
 

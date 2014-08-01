@@ -46,7 +46,8 @@ class ContactController extends \BaseController {
 		} else {
 			// store
 			$contact = new Contact;
-			$contact->date       = Input::get('date');
+			$date = Input::get('date');
+			$contact->date       = date("Y-m-d", strtotime($date));
 			$contact->type      = Input::get('type');
 			$contact->description      = Input::get('description');
 			$contact->employee_id   = Input::get('employee_id');
@@ -79,7 +80,9 @@ class ContactController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$contact = Contact::find($id);
+		return View::make('contacts.edit')
+			->with('contact', $contact);
 	}
 
 
@@ -91,7 +94,32 @@ class ContactController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		// validate
+		// read more on validation at http://laravel.com/docs/validation
+		$rules = array(
+			'date'       => 'required',
+			'type'		=> 'required'
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return Redirect::to('contacts/' . $id . '/edit')
+				->withErrors($validator)
+				->withInput(Input::all());
+		} else {
+			// store
+			$contact = Contact::find($id);
+			$date = Input::get('date');
+			$contact->date       = date("Y-m-d", strtotime($date));
+			$contact->type      = Input::get('type');
+			$contact->description      = Input::get('description');
+			$contact->save();
+
+			// redirect
+			Session::flash('message', 'Successfully updated contact!');
+			return Redirect::to('employees/' . Input::get('employee_id'));
+		}
 	}
 
 
@@ -103,7 +131,13 @@ class ContactController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$contact = Contact::find($id);
+		$employee_id = $contact->employee_id;
+		$contact->delete();
+
+		// redirect
+		Session::flash('message', 'Successfully deleted the contact!');
+		return Redirect::to('employees/' . $employee_id);
 	}
 
 

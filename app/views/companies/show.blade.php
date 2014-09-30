@@ -4,6 +4,11 @@
 	<h2>{{ $company->name }}</h2>
 
 	<div>
+		Website:
+		<p>{{ $company->website }}</p>
+	</div>
+
+	<div>
 		Address:
 		<address>{{ nl2br(e($company->address)) }}</address>
 	</div>

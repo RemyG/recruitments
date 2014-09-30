@@ -10,6 +10,9 @@
 			{{ Form::label('name', 'Name') . Form::text('name', Input::old('name'), array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
+			{{ Form::label('website', 'Website') . Form::text('website', Input::old('website'), array('class' => 'form-control')) }}
+		</div>
+		<div class="form-group">
 			{{ Form::label('address', 'Address') . Form::textarea('address', Input::old('address'), array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">

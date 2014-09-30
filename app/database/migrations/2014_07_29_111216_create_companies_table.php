@@ -15,8 +15,13 @@ class CreateCompaniesTable extends Migration {
 		Schema::create('companies', function($table)
 		{
 			$table->increments('id');
-			$table->string('name')->unique();
+			$table->string('name');
+			$table->string('website')->default('');
+			$table->text('address')->default('');
+			$table->text('description')->default('');
+			$table->integer('user_id');
 			$table->timestamps();
+			$table->unique(array('name', 'user_id'));
 		});
 	}
 

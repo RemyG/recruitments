@@ -14,11 +14,13 @@
 	<body>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-10">
+				<div class="col-md-8">
 					<h1><a href="/">Recruitments</a></h1>
 				</div>
-				<div class="col-md-2">
-					<div class="logout pull-right"><a href="/logout">Logout</a></div>
+				<div class="col-md-4">
+					@if (Auth::check())
+						<div class="logout pull-right"><a href="/profile">Profile</a><a href="/logout">Logout</a></div>
+					@endif
 				</div>
 			</div>
 

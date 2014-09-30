@@ -9,7 +9,15 @@ class CompanyController extends \BaseController {
 	 */
 	public function index()
 	{
-		$companies = Company::orderBy('name')->get();
+		/*$page = Input::get('page', 1);
+
+		$data = Company::getByPage($page, 50);
+
+		$companies = Paginator::make($data->items, $data->totalItems, 50);
+
+		return View::make('companies.index', compact('companies'));*/
+
+		$companies = User::find(Auth::id())->companies->sortBy('name');
 		return View::make('companies.index', array('companies' => $companies));
 	}
 
@@ -32,9 +40,24 @@ class CompanyController extends \BaseController {
 	 */
 	public function store()
 	{
-		$name = Input::get('name');
-		$company = Company::firstOrCreate(array('name' => $name));
-		return Redirect::to('companies');
+		$rules = array(
+			'name'	=> 'required|unique:companies,name,id,NULL,user_id,'.Auth::id()
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::to('companies/')
+				->withErrors($validator)
+				->withInput(Input::all());
+		}
+		else {
+			$company = new Company();
+			$company->name = Input::get('name');
+			$company->user_id = Auth::id();
+			$company->save();
+			Session::flash('message', 'Successfully created company!');
+			return Redirect::to('companies/' . $company->id);
+		}
 	}
 
 
@@ -73,27 +96,34 @@ class CompanyController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		// validate
-		// read more on validation at http://laravel.com/docs/validation
-		$rules = array(
-			'name'       => 'required'
-		);
+		$company = Company::find($id);
+
+		$rules = array();
+
+		// name has to be unique
+		if (Input::get('name') != $company->name) {
+			$rules['name'] = 'required|unique:companies,name,id,NULL,user_id,'.Auth::id();
+		} else {
+			$rules['name'] = 'required|exists:companies,name,id,NULL,user_id,'.Auth::id();
+		}
+		if (Input::get('website') != '') {
+			$rules['website'] = 'url';
+		}
+
 		$validator = Validator::make(Input::all(), $rules);
 
-		// process the login
 		if ($validator->fails()) {
-			return Redirect::to('companies/' . $id)
+			return Redirect::to('companies/' . $id . '/edit')
 				->withErrors($validator)
 				->withInput(Input::all());
 		} else {
-			// store
 			$company = Company::find($id);
 			$company->name = Input::get('name');
+			$company->website = Input::get('website');
 			$company->address = Input::get('address');
 			$company->description = Input::get('description');
 			$company->save();
 
-			// redirect
 			Session::flash('message', 'Successfully updated company!');
 			return Redirect::to('companies/' . $id);
 		}
@@ -110,7 +140,6 @@ class CompanyController extends \BaseController {
 		$company = Company::find($id);
 		$company->delete();
 
-		// redirect
 		Session::flash('message', 'Successfully deleted the company!');
 		return Redirect::to('companies');
 	}

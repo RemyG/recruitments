@@ -5,3 +5,11 @@ div.delete-section {
 div.logout {
 	padding-top: 25px;
 }
+
+div.logout a {
+	margin-left: 20px;
+}
+
+div.signup {
+	border-left: 1px solid #ccc;
+}

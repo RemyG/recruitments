@@ -17,6 +17,10 @@ Route::post('/login', 'UserController@postLogin');
 
 Route::get('/logout', 'UserController@getLogout');
 
+Route::get('/signup', 'UserController@getSignUp');
+
+Route::post('/signup', 'UserController@postSignUp');
+
 Route::group(array('before' => 'auth'), function() {
 	Route::get('/', 'CompanyController@index');
 
@@ -25,4 +29,8 @@ Route::group(array('before' => 'auth'), function() {
 	Route::resource('employees', 'EmployeeController');
 
 	Route::resource('contacts', 'ContactController');
+
+	Route::get('/profile', 'UserController@show');
+
+	Route::post('/profile', 'UserController@update');
 });

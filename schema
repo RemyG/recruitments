@@ -1,0 +1,8 @@
+CREATE TABLE "migrations" ("migration" varchar not null, "batch" integer not null);
+CREATE TABLE "users" ("id" integer not null primary key autoincrement, "username" varchar not null, "email" varchar not null, "password" varchar not null, "remember_token" varchar null, "created_at" datetime not null, "updated_at" datetime not null);
+CREATE UNIQUE INDEX users_username_unique on "users" ("username");
+CREATE UNIQUE INDEX users_email_unique on "users" ("email");
+CREATE TABLE "companies" ("id" integer not null primary key autoincrement, "name" varchar not null, "website" varchar not null default '', "address" text not null default '', "description" text not null default '', "user_id" integer not null, "created_at" datetime not null, "updated_at" datetime not null);
+CREATE UNIQUE INDEX companies_name_user_id_unique on "companies" ("name", "user_id");
+CREATE TABLE "employees" ("id" integer not null primary key autoincrement, "name" varchar not null, "email" varchar not null, "phone" varchar not null, "position" varchar not null, "company_id" integer not null, "created_at" datetime not null, "updated_at" datetime not null);
+CREATE TABLE "contacts" ("id" integer not null primary key autoincrement, "type" varchar not null, "description" text not null, "date" datetime not null, "employee_id" integer not null, "created_at" datetime not null, "updated_at" datetime not null);
